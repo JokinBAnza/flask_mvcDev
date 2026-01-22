@@ -1,5 +1,6 @@
 Al utilizar el proyecto hay que crear el directorio venv con :
 python -m venv venv
+venv/Scripts/activate
 
 Despues hay que instalar las dependencias con :
 pip install -r requirements.txt
