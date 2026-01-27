@@ -1,11 +1,12 @@
 from flask import Blueprint, request, render_template, redirect, url_for, flash
-from app.models.libro import Libro
-from app.services.libros_service import (
+from myapp.models.libro import Libro
+from myapp.models.socio import Socio
+from myapp.services.libros_service import (
     listar_libros, crear_libro, editar_libro,
     prestar_libro, devolver_libro, buscar_libros_por_titulo
 )
-from app.forms.libro_form import LibroForm, PrestamoForm, DevolucionForm
-from app.decorators import libro_disponible
+from myapp.forms.libro_form import LibroForm, PrestamoForm, DevolucionForm
+from myapp.decorators import libro_disponible
 
 libros_bp = Blueprint(
     "libros",
@@ -54,13 +55,27 @@ def crear():
         return redirect(url_for("libros.listar"))
     return render_template("paginas/libros/libro_crear.html", form=form)
 
-# ────────────── PRESTAR ──────────────
 @libros_bp.route("/prestar", methods=["GET", "POST"])
 def prestar():
     form = PrestamoForm()
+
+    # Solo libros que no estén prestados
+    libros_disponibles = [(libro.id, libro.titulo) for libro in Libro.query.filter_by(prestado=False).all()]
+    form.libro_id.choices = [(0, "Seleccione un libro")] + libros_disponibles
+
+    # Todos los socios
+    form.socio_id.choices = [(0, "Seleccione un socio")] + [(socio.id, socio.nombre) for socio in Socio.query.all()]
+
     if form.validate_on_submit():
-        return _prestar_libro(form.libro_id.data, form.socio_id.data)
+        if form.libro_id.data == 0 or form.socio_id.data == 0:
+            flash("Debes seleccionar un libro y un socio", "danger")
+        else:
+            prestar_libro(form.libro_id.data, form.socio_id.data)
+            flash("Libro prestado correctamente", "success")
+            return redirect(url_for("libros.listar"))
+
     return render_template("paginas/libros/libro_prestamo.html", form=form)
+
 
 @libro_disponible
 def _prestar_libro(libro_id, socio_id):

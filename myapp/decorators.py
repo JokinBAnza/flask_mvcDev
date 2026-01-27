@@ -1,7 +1,7 @@
 from functools import wraps
 from flask import flash, redirect, url_for
-from app.models.libro import Libro
-from app.models.socio import Socio
+from myapp.models.libro import Libro
+from myapp.models.socio import Socio
 
 def libro_disponible(f):
     @wraps(f)
@@ -17,7 +17,7 @@ def libro_disponible(f):
         if libro.socio:
             flash('El libro ya está prestado', 'danger')
             return redirect(url_for('libros.listar'))
-        if socio.libro:
+        if socio.libros:
             flash('El socio ya tiene un libro', 'danger')
             return redirect(url_for('libros.listar'))
         return f(libro_id, socio_id, *args, **kwargs)

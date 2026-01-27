@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+
+<!-- Sección principal -->
+<section class="hero">
+    <div class="hero-content">
+        <h1>¡Bienvenido a Biblioteca MVC!</h1>
+        <p>Gestiona tus libros y socios de forma rápida y sencilla. Explora, añade y organiza tu biblioteca desde aquí.</p>
+        <a href="{{ url_for('libros.listar') }}" class="btn">Ver libros</a>
+    </div>
+</section>
+
+<!-- Sección de características -->
+<section class="features">
+    <div class="feature">
+        <h3>Organización</h3>
+        <p>Mantén tu biblioteca organizada con categorías, autores y socios asociados.</p>
+    </div>
+    <div class="feature">
+        <h3>Acceso rápido</h3>
+        <p>Busca y encuentra cualquier libro al instante gracias a nuestra interfaz intuitiva.</p>
+    </div>
+    <div class="feature">
+        <h3>Seguridad</h3>
+        <p>Gestiona usuarios y socios con autenticación segura para mantener la información protegida.</p>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Libros Prestados{% endblock %}
+
+{% block content %}
+<h1>Libros Prestados</h1>
+
+{% if libros %}
+<table>
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Socio</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for libro in libros %}
+        <tr>
+            <td>{{ libro.titulo }}</td>
+            <td>{{ libro.autor }}</td>
+            <td>{{ libro.socio.nombre if libro.socio else "N/A" }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>No hay libros prestados.</p>
+{% endif %}
+{% endblock %}

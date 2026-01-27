@@ -13,7 +13,8 @@ def create_app():
     login_manager.init_app(app)
 
     # Registrar blueprints
-    from .blueprints.libros import libros_bp
+    from myapp.controllers.libros_controller import libros_bp
+
     app.register_blueprint(libros_bp)
     
     return app

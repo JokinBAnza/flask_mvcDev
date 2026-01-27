@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block title %}Listado de Socios{% endblock %}
+
+{% block content %}
+<h1>Listado de Socios</h1>
+
+<table border="1" cellpadding="5">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for socio in socios %}
+        <tr>
+            <td>{{ socio.id }}</td>
+            <td>{{ socio.nombre }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{{ url_for('socios.crear_socio') }}">Crear nuevo socio</a>
+{% endblock %}

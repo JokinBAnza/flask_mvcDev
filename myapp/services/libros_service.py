@@ -1,7 +1,7 @@
 from sqlalchemy import func
-from app import db
-from app.models.libro import Libro
-from app.models.socio import Socio
+from myapp import db
+from myapp.models.libro import Libro
+from myapp.models.socio import Socio
 
 # ────────────── LISTAR ──────────────
 def listar_libros():
@@ -37,17 +37,23 @@ def prestar_libro(libro_id, socio_id):
     socio = Socio.query.get(socio_id)
     if not libro or not socio:
         return None
-    libro.socio = socio
+    libro.socio = socio  # correcto
     db.session.commit()
     return libro
 
 def devolver_libro(socio_id):
     socio = Socio.query.get(socio_id)
-    if socio and socio.libro:
-        socio.libro.socio = None
+    if socio and socio.libros:  # usar 'libros', plural
+        libro = socio.libros[0]  # obtener el primer libro prestado
+        libro.socio = None        # desvincular del socio
         db.session.commit()
         return True
     return False
+
+# ────────────── LISTAR SOCIOS CON PRESTAMOS ──────────────
+def listar_socios_con_prestamos():
+    return Socio.query.filter(Socio.libros.any()).all()  # any() porque es relación uno a muchos
+
 
 # ────────────── BÚSQUEDAS ──────────────
 def buscar_libros_por_titulo(palabra):
