@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, TextAreaField, SubmitField
+from wtforms import StringField, TextAreaField, SubmitField, IntegerField
 from wtforms.validators import DataRequired, Length
 
 class LibroForm(FlaskForm):
@@ -19,3 +19,14 @@ class LibroForm(FlaskForm):
     )
 
     submit = SubmitField("Guardar")
+
+# Formulario para préstamo de libro
+class PrestamoForm(FlaskForm):
+    libro_id = IntegerField("ID del libro", validators=[DataRequired()])
+    socio_id = IntegerField("ID del socio", validators=[DataRequired()])
+    submit = SubmitField("Prestar libro")
+
+# Formulario para devolución de libro
+class DevolucionForm(FlaskForm):
+    socio_id = IntegerField("ID del socio", validators=[DataRequired()])
+    submit = SubmitField("Devolver libro")

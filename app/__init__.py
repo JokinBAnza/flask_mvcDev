@@ -2,6 +2,9 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+import os
+from app.models.libro import Libro
+from app.models.socio import Socio
 
 
 db = SQLAlchemy()
