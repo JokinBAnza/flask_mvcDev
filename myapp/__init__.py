@@ -2,8 +2,6 @@ from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from .models.user import Usuario
-
 
 db = SQLAlchemy()  # solo se define aquí
 login_manager = LoginManager()
@@ -49,5 +47,6 @@ from .models.user import Usuario
 
 @login_manager.user_loader
 def load_user(user_id):
-    from .models.user import Usuario  # importar aquí, dentro de la función
+    from .models.user import Usuario
     return Usuario.query.get(int(user_id))
+

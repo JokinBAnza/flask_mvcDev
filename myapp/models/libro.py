@@ -1,4 +1,4 @@
-from .. import db
+from myapp import db
 from sqlalchemy import Boolean  # necesario para el tipo Boolean
 
 class Libro(db.Model):

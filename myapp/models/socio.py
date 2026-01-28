@@ -1,4 +1,4 @@
-from .. import db
+from myapp import db
 
 class Socio(db.Model):
     __tablename__ = "socio"

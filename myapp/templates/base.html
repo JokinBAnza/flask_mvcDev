@@ -4,22 +4,32 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Mi aplicación{% endblock %}</title>
+    <!-- Aquí se carga tu CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/estilos.css') }}">
 </head>
-
-<body>
-
-    <header>
-        <nav>
+<header>
+    <nav class="navbar">
+        <div class="nav-left">
             <a href="{{ url_for('navigation.inicio') }}">Inicio</a>
             <a href="{{ url_for('libros.listar') }}">Libros</a>
-              <a href="{{ url_for('socios.listar_socios') }}">Socios</a>
+            <a href="{{ url_for('socios.listar_socios') }}">Socios</a>
             <a href="{{ url_for('libros.prestar') }}">Prestar</a>
             <a href="{{ url_for('libros.devolver') }}">Devolver</a>
             <a href="{{ url_for('socios.prestamos') }}">Socios con libros</a>
-        </nav>
+        </div>
 
-    </header>
+        <div class="nav-right">
+            {% if current_user.is_authenticated %}
+                <span>Hola, {{ current_user.username }}</span>
+                <a href="{{ url_for('auth.logout') }}">Cerrar sesión</a>
+            {% else %}
+                <a href="{{ url_for('auth.login') }}">Iniciar sesión</a>
+            {% endif %}
+        </div>
+    </nav>
+</header>
+
+
 
     <main>
         {% block content %}

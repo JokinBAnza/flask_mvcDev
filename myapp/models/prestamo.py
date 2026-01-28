@@ -1,4 +1,4 @@
-from .. import db
+from myapp import db
 
 class Prestamo(db.Model):
     id = db.Column(db.Integer, primary_key=True)

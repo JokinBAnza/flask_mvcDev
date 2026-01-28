@@ -6,45 +6,27 @@
 <h1>Libros Prestados</h1>
 
 {% if libros %}
-<table class="tabla">
-    <thead>
-        <tr>
-            <th>Título</th>
-            <th>Autor</th>
-            <th>Socio</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for libro, socio in libros %}
-        <tr>
-            <td>{{ libro.titulo }}</td>
-            <td>{{ libro.autor }}</td>
-            <td>{{ socio.nombre }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="table-container">
+    <table class="tabla">
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Autor</th>
+                <th>Socio</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for libro, socio in libros %}
+            <tr>
+                <td>{{ libro.titulo }}</td>
+                <td>{{ libro.autor }}</td>
+                <td>{{ socio.nombre }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
 {% else %}
-<p>No hay libros prestados.</p>
+<p style="text-align:center; margin-top:2rem;">No hay libros prestados.</p>
 {% endif %}
-{% endblock %}
-
-{% block styles %}
-<style>
-.tabla {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 2rem 0;
-}
-
-.tabla th, .tabla td {
-    border: 1px solid #ddd;
-    padding: 0.5rem;
-    text-align: left;
-}
-
-.tabla th {
-    background-color: #f2f2f2;
-}
-</style>
 {% endblock %}

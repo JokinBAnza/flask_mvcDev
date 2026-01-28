@@ -6,54 +6,24 @@
 <h1>Devolver Libro</h1>
 
 {% if form.socio_id.choices %}
-<form method="POST">
-    {{ form.hidden_tag() }}
-    <div>
-        {{ form.socio_id.label }}<br>
-        {{ form.socio_id() }}
-    </div>
-    <button type="submit">Devolver</button>
-</form>
+<div class="form-container">
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.socio_id.label }}
+            {{ form.socio_id(class="input-field") }}
+            {% if form.socio_id.errors %}
+                <ul class="errors">
+                {% for error in form.socio_id.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn">{{ form.submit.label.text if form.submit.label.text else 'Devolver' }}</button>
+    </form>
+</div>
 {% else %}
-<p>No hay socios con libros prestados.</p>
+<p style="text-align:center; margin-top:2rem;">No hay socios con libros prestados.</p>
 {% endif %}
-
-{% endblock %}
-
-{% block styles %}
-<style>
-form {
-    max-width: 400px;
-    margin: 2rem auto;
-    padding: 1.5rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background: #f9f9f9;
-}
-
-form div {
-    margin-bottom: 1rem;
-}
-
-form input,
-form select {
-    width: 100%;
-    padding: 0.5rem;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-}
-
-button {
-    padding: 0.5rem 1rem;
-    background: #4a90e2;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button:hover {
-    background: #357ABD;
-}
-</style>
 {% endblock %}

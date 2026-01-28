@@ -9,7 +9,7 @@ from myapp.services.libros_service import (
     prestar_libro, devolver_libro, buscar_libros_por_titulo
 )
 from myapp.forms.libro_form import LibroForm, PrestamoForm, DevolucionForm
-from myapp.decorators import libro_disponible
+from myapp.decorators import libro_disponible, role_required
 
 libros_bp = Blueprint(
     "libros",
@@ -48,6 +48,7 @@ def detalle(id):
 # ────────────── CREAR ──────────────
 @libros_bp.route("/crear", methods=["GET", "POST"])
 @login_required
+@role_required("admin")
 def crear():
     form = LibroForm()
     if form.validate_on_submit():
@@ -63,6 +64,7 @@ def crear():
 # ────────────── PRESTAR ──────────────
 @libros_bp.route("/prestar", methods=["GET", "POST"])
 @login_required
+@role_required("admin")
 def prestar():
     form = PrestamoForm()
 
@@ -109,6 +111,7 @@ def _prestar_libro(libro_id, socio_id):
 # ────────────── DEVOLVER ──────────────
 @libros_bp.route("/devolver", methods=["GET", "POST"])
 @login_required
+@role_required("admin")
 def devolver():
     form = DevolucionForm()
 
