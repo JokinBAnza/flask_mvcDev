@@ -5,16 +5,18 @@
 {% block content %}
 <h1>Devolver Libro</h1>
 
+{% if form.socio_id.choices %}
 <form method="POST">
     {{ form.hidden_tag() }}
-    
     <div>
         {{ form.socio_id.label }}<br>
-        {{ form.socio_id(size=5) }}
+        {{ form.socio_id() }}
     </div>
-
     <button type="submit">Devolver</button>
 </form>
+{% else %}
+<p>No hay socios con libros prestados.</p>
+{% endif %}
 
 {% endblock %}
 
@@ -33,7 +35,8 @@ form div {
     margin-bottom: 1rem;
 }
 
-form input {
+form input,
+form select {
     width: 100%;
     padding: 0.5rem;
     border-radius: 4px;

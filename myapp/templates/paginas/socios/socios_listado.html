@@ -5,11 +5,12 @@
 {% block content %}
 <h1>Listado de Socios</h1>
 
-<table border="1" cellpadding="5">
+<table class="tabla">
     <thead>
         <tr>
             <th>ID</th>
             <th>Nombre</th>
+            <th>Email</th>
         </tr>
     </thead>
     <tbody>
@@ -17,10 +18,47 @@
         <tr>
             <td>{{ socio.id }}</td>
             <td>{{ socio.nombre }}</td>
+            <td>{{ socio.email }}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
 
-<a href="{{ url_for('socios.crear_socio') }}">Crear nuevo socio</a>
+<button onclick="location.href='{{ url_for('socios.crear_socio') }}'" class="btn">Crear nuevo socio</button>
+{% endblock %}
+
+{% block styles %}
+<style>
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 2rem 0;
+}
+
+.tabla th, .tabla td {
+    border: 1px solid #ddd;
+    padding: 0.5rem;
+    text-align: left;
+}
+
+.tabla th {
+    background-color: #f2f2f2;
+}
+
+.btn {
+    display: inline-block;
+    background: #4a90e2;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    font-weight: bold;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.btn:hover {
+    background: #357ABD;
+}
+</style>
 {% endblock %}

@@ -1,6 +1,9 @@
 from flask import Blueprint, request, render_template, redirect, url_for, flash
 from myapp.models.libro import Libro
+from flask_login import login_required
 from myapp.models.socio import Socio
+from myapp import db
+from myapp.models.prestamo import Prestamo
 from myapp.services.libros_service import (
     listar_libros, crear_libro, editar_libro,
     prestar_libro, devolver_libro, buscar_libros_por_titulo
@@ -27,6 +30,7 @@ def grid():
 
 # ────────────── DETALLE Y EDICIÓN ──────────────
 @libros_bp.route("/<int:id>", methods=["GET", "POST"])
+@login_required
 def detalle(id):
     libro = Libro.query.get_or_404(id)
     form = LibroForm(obj=libro)
@@ -43,6 +47,7 @@ def detalle(id):
 
 # ────────────── CREAR ──────────────
 @libros_bp.route("/crear", methods=["GET", "POST"])
+@login_required
 def crear():
     form = LibroForm()
     if form.validate_on_submit():
@@ -55,22 +60,40 @@ def crear():
         return redirect(url_for("libros.listar"))
     return render_template("paginas/libros/libro_crear.html", form=form)
 
+# ────────────── PRESTAR ──────────────
 @libros_bp.route("/prestar", methods=["GET", "POST"])
+@login_required
 def prestar():
     form = PrestamoForm()
 
-    # Solo libros que no estén prestados
-    libros_disponibles = [(libro.id, libro.titulo) for libro in Libro.query.filter_by(prestado=False).all()]
-    form.libro_id.choices = [(0, "Seleccione un libro")] + libros_disponibles
+    # --- Libros disponibles: solo los que no tienen préstamo activo ---
+    libros_prestados = db.session.query(Prestamo.libro_id).filter(Prestamo.fecha_devolucion == None)
+    libros_disponibles = Libro.query.filter(~Libro.id.in_(libros_prestados)).all()
+    form.libro_id.choices = [(0, "Seleccione un libro")] + [(l.id, l.titulo) for l in libros_disponibles]
 
-    # Todos los socios
-    form.socio_id.choices = [(0, "Seleccione un socio")] + [(socio.id, socio.nombre) for socio in Socio.query.all()]
+    # --- Socios disponibles: solo los que no tienen préstamo activo ---
+    socios_con_prestamo = db.session.query(Prestamo.socio_id).filter(Prestamo.fecha_devolucion == None)
+    socios_disponibles = Socio.query.filter(~Socio.id.in_(socios_con_prestamo)).all()
+    form.socio_id.choices = [(0, "Seleccione un socio")] + [(s.id, s.nombre) for s in socios_disponibles]
 
+    # --- Validación formulario ---
     if form.validate_on_submit():
         if form.libro_id.data == 0 or form.socio_id.data == 0:
             flash("Debes seleccionar un libro y un socio", "danger")
         else:
-            prestar_libro(form.libro_id.data, form.socio_id.data)
+            # Crear el préstamo
+            prestamo = Prestamo(
+                libro_id=form.libro_id.data,
+                socio_id=form.socio_id.data
+            )
+            db.session.add(prestamo)
+
+            # Opcional: marcar libro como prestado
+            libro = Libro.query.get(form.libro_id.data)
+            libro.prestado = True
+
+            db.session.commit()
+
             flash("Libro prestado correctamente", "success")
             return redirect(url_for("libros.listar"))
 
@@ -85,15 +108,41 @@ def _prestar_libro(libro_id, socio_id):
 
 # ────────────── DEVOLVER ──────────────
 @libros_bp.route("/devolver", methods=["GET", "POST"])
+@login_required
 def devolver():
     form = DevolucionForm()
+
+    # Filtrar socios con préstamo activo
+    socios_con_prestamo = db.session.query(Prestamo.socio_id).filter(Prestamo.fecha_devolucion == None)
+    socios_disponibles = Socio.query.filter(Socio.id.in_(socios_con_prestamo)).all()
+    form.socio_id.choices = [(s.id, s.nombre) for s in socios_disponibles]
+
     if form.validate_on_submit():
-        if devolver_libro(form.socio_id.data):
+        # Buscar el préstamo activo
+        prestamo = Prestamo.query.filter_by(socio_id=form.socio_id.data, fecha_devolucion=None).first()
+        if prestamo:
+            prestamo.fecha_devolucion = db.func.current_date()
+            libro = Libro.query.get(prestamo.libro_id)
+            libro.prestado = False
+            db.session.commit()
             flash("Libro devuelto correctamente", "success")
         else:
             flash("El socio no tiene ningún libro prestado", "danger")
+
         return redirect(url_for("libros.listar"))
+
     return render_template("paginas/libros/libro_devolver.html", form=form)
+
+
+# ────────────── LIBROS PRESTADOS ──────────────
+@libros_bp.route("/prestados")
+@login_required
+def libros_prestados():
+    prestamos_activos = Prestamo.query.filter_by(fecha_devolucion=None).all()
+    libros = [(Libro.query.get(p.libro_id), Socio.query.get(p.socio_id)) for p in prestamos_activos]
+    return render_template("paginas/libros/libros_prestados.html", libros=libros)
+
+
 
 # ────────────── BUSCAR ──────────────
 @libros_bp.route("/buscar", methods=["GET"])

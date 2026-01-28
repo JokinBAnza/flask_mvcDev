@@ -5,12 +5,24 @@
 {% block content %}
 <h1>Libros</h1>
 
+<form method="GET" action="{{ url_for('libros.buscar') }}">
+    <input type="text" name="q" placeholder="Buscar libro..." value="{{ busqueda|default('') }}">
+    <button type="submit">Buscar</button>
+</form>
+
+{% if libros %}
 <ul>
     {% for libro in libros %}
-        <li>Titulo: <a href="/libros/{{ libro.id }}">{{ libro.titulo }}</a> Autor: {{ libro.autor }}</li>
-        
+        <li>
+            Título: <a href="{{ url_for('libros.detalle', id=libro.id) }}">{{ libro.titulo }}</a>
+            Autor: {{ libro.autor }}
+            - Estado: {% if libro.prestado %}Prestado{% else %}Disponible{% endif %}
+        </li>
     {% endfor %}
 </ul>
+{% else %}
+<p>No se encontraron libros que coincidan con tu búsqueda.</p>
+{% endif %}
 
 <button onclick="location.href='{{ url_for('libros.crear') }}'">Crear nuevo libro</button>
-    {% endblock %}
+{% endblock %}

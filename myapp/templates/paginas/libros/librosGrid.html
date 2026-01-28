@@ -8,9 +8,62 @@
 <div class="grid-container">
     {% for libro in libros %}
         <div class="card">
-            <h1>Titulo: {{ libro.titulo }}</h1><div class="autor">Autor: {{ libro.autor }}</div><div class="resumen">{{ libro.resumen }}</div>
+            <h2><a href="{{ url_for('libros.detalle', id=libro.id) }}">{{ libro.titulo }}</a></h2>
+            <div class="autor"><strong>Autor:</strong> {{ libro.autor }}</div>
+            <div class="estado"><strong>Estado:</strong> {% if libro.prestado %}Prestado{% else %}Disponible{% endif %}</div>
+            <div class="resumen">
+                {% if libro.resumen %}
+                    {{ libro.resumen[:100] }}{% if libro.resumen|length > 100 %}...{% endif %}
+                {% else %}
+                    Sin resumen
+                {% endif %}
+            </div>
         </div>
     {% endfor %}
-    </div>
+</div>
 
+{% endblock %}
+
+{% block styles %}
+<style>
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.card {
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.card h2 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.2rem;
+}
+
+.card h2 a {
+    text-decoration: none;
+    color: #4a90e2;
+}
+
+.card h2 a:hover {
+    text-decoration: underline;
+}
+
+.autor,
+.estado,
+.resumen {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+}
+
+.resumen {
+    color: #555;
+}
+</style>
 {% endblock %}
