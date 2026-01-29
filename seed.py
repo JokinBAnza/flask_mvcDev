@@ -4,7 +4,7 @@ from myapp.models.libro import Libro
 from myapp.models.socio import Socio
 from myapp.models.prestamo import Prestamo
 from myapp.models.user import Usuario
-from werkzeug.security import generate_password_hash
+from myapp.services.hashPassword import hash_password  # <- usamos el servicio
 
 app = create_app()
 
@@ -41,17 +41,17 @@ with app.app_context():
     # ────────────── USUARIOS ──────────────
     admin = Usuario(
         username="admin",
-        password=generate_password_hash("admin123"),
+        password=hash_password("admin123"),  # <- usamos el servicio
         is_admin=True
     )
     user1 = Usuario(
         username="user1",
-        password=generate_password_hash("user123"),
+        password=hash_password("user123"),  # <- usamos el servicio
         is_admin=False
     )
     user2 = Usuario(
         username="user2",
-        password=generate_password_hash("user123"),
+        password=hash_password("user123"),  # <- usamos el servicio
         is_admin=False
     )
     db.session.add_all([admin, user1, user2])
