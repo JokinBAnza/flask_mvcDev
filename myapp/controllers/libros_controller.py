@@ -16,9 +16,13 @@ libros_bp = Blueprint("libros", __name__, url_prefix="/libros")
 # ────────────── LISTAR ──────────────
 @libros_bp.route("/")
 def listar():
-    libros = listar_libros()
-    libros_estado = [(l, "Prestado" if l.socio else "Disponible") for l in libros]
-    return render_template("paginas/libros/libros.html", libros=libros_estado)
+    solo_disponibles = request.args.get("disponibles", default=0, type=int)
+    if solo_disponibles:
+        libros = listar_libros_disponibles()
+    else:
+        libros = listar_libros()
+    return render_template("paginas/libros/libros.html", libros=libros)
+
 
 
 # ────────────── GRID ──────────────
@@ -31,6 +35,7 @@ def grid():
 # ────────────── DETALLE Y EDICIÓN ──────────────
 @libros_bp.route("/<int:id>", methods=["GET", "POST"])
 @login_required
+@role_required("admin")
 def detalle(id):
     libro = obtener_libro(id)
     if not libro:
@@ -120,9 +125,24 @@ def devolver():
 # ────────────── LIBROS PRESTADOS ──────────────
 @libros_bp.route("/prestados")
 @login_required
+@role_required("admin")
 def libros_prestados():
     libros = [(l, l.socio) for l in listar_libros() if l.socio]
     return render_template("paginas/libros/libros_prestados.html", libros=libros)
+
+# ────────────── BORRAR LIBROS ──────────────
+@libros_bp.route("/borrar/<int:libro_id>", methods=["POST"])
+@role_required("admin")
+def borrar(libro_id):
+    from myapp.services.libro_service import borrar_libro
+
+    exito = borrar_libro(libro_id)
+    if not exito:
+        flash("No se puede borrar un libro que está prestado o no existe.", "error")
+    else:
+        flash("Libro borrado correctamente.", "success")
+    return redirect(url_for("libros.listar"))
+
 
 
 # ────────────── BUSCAR ──────────────

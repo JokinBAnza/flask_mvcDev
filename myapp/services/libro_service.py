@@ -73,3 +73,13 @@ def listar_socios_disponibles() -> list[Socio]:
 def listar_libros_disponibles() -> list[Libro]:
     """Devuelve todos los libros que no están prestados."""
     return Libro.query.filter(Libro.socio == None).all()
+
+# ────────────── BORRAR LIBROS NO PRESTADOS ──────────────
+def borrar_libro(libro_id: int) -> bool:
+    """Borra un libro si no está prestado. Devuelve True si se borró, False si estaba prestado o no existe."""
+    libro = Libro.query.get(libro_id)
+    if libro and libro.socio is None:
+        db.session.delete(libro)
+        db.session.commit()
+        return True
+    return False

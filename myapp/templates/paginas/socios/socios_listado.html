@@ -5,12 +5,15 @@
 {% block content %}
 <h1>Listado de Socios</h1>
 
+<button onclick="location.href='{{ url_for('socios.crear_socio_vista') }}'" class="btn">Crear nuevo socio</button>
+
 <table class="tabla">
     <thead>
         <tr>
             <th>ID</th>
             <th>Nombre</th>
             <th>Email</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -19,46 +22,107 @@
             <td>{{ socio.id }}</td>
             <td>{{ socio.nombre }}</td>
             <td>{{ socio.email }}</td>
+           <td>
+    <button onclick="location.href='{{ url_for('socios.editar_socio_vista', socio_id=socio.id) }}'"
+        class="btn-accion">Editar</button>
+
+    <button style="background-color: red;" class="btn-accion btn-borrar"
+        onclick="if(confirm('¿Seguro que quieres borrar este socio?')) { fetch('{{ url_for('socios.borrar_socio_vista', socio_id=socio.id) }}', {method:'POST'}).then(()=>location.reload()) }">
+        Borrar
+    </button>
+</td>
+
+
         </tr>
         {% endfor %}
     </tbody>
 </table>
-
-<button onclick="location.href='{{ url_for('socios.crear_socio') }}'" class="btn">Crear nuevo socio</button>
 {% endblock %}
 
 {% block styles %}
 <style>
-.tabla {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 2rem 0;
-}
+    .tabla {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 2rem 0;
+    }
 
-.tabla th, .tabla td {
-    border: 1px solid #ddd;
-    padding: 0.5rem;
-    text-align: left;
-}
+    .tabla th,
+    .tabla td {
+        border: 1px solid #ddd;
+        padding: 0.5rem;
+        text-align: left;
+    }
 
-.tabla th {
-    background-color: #f2f2f2;
-}
+    .tabla th {
+        background-color: #f2f2f2;
+    }
 
-.btn {
+    .btn {
+        display: inline-block;
+        background: #4a90e2;
+        color: white;
+        padding: 0.75rem 1.5rem;
+        font-weight: bold;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        margin-top: 1rem;
+    }
+
+    .btn:hover {
+        background: #357ABD;
+    }
+
+    .btn-accion {
+        display: inline-block;
+        background: #4a90e2;
+        color: white;
+        padding: 0.25rem 0.5rem;
+        font-size: 0.85rem;
+        border-radius: 4px;
+        border: none;
+        cursor: pointer;
+        margin-right: 0.25rem;
+    }
+
+    .btn-accion:hover {
+        background: #357ABD;
+    }
+
+    .btn-borrar {
+        background: #E74C3C;
+    }
+
+    .btn-borrar:hover {
+        background: #C0392B;
+    }
+    .btn-accion {
     display: inline-block;
     background: #4a90e2;
     color: white;
-    padding: 0.75rem 1.5rem;
-    font-weight: bold;
-    border-radius: 5px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+    border-radius: 4px;
     border: none;
     cursor: pointer;
-    margin-top: 1rem;
+    line-height: 1;          /* importante para que el botón no crezca por el form */
+    vertical-align: middle;  /* centra con el otro botón */
 }
 
-.btn:hover {
-    background: #357ABD;
+.btn-borrar {
+    background: #E74C3C;
 }
+
+.btn-borrar:hover {
+    background: #C0392B;
+}
+
+form {
+    display: inline-flex; /* hace que el form ocupe solo lo del contenido */
+    margin: 0;
+    padding: 0;
+}
+
 </style>
 {% endblock %}
