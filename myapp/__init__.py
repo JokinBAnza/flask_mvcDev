@@ -22,7 +22,6 @@ def create_app():
     from .models.libro import Libro
     from .models.socio import Socio
     from .models.user import Usuario  # tu modelo de usuarios
-    from .models.prestamo import Prestamo
 
     # Registrar blueprints
     from .controllers.navigation_controller import navigation_bp

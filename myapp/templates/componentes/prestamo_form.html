@@ -1,70 +1,21 @@
-{% extends "base.html" %}
-
-{% block title %}Prestar Libro{% endblock %}
-
-{% block content %}
-<h1>Prestar Libro</h1>
-
-<form method="POST">
+<form method="POST" novalidate>
     {{ form.hidden_tag() }}
 
-    <div class="form-group">
-        <label for="libro_id">Libro</label>
-        <select name="libro_id" id="libro_id" class="input-field">
-            {% for libro in libros %}
-                <option value="{{ libro.id }}">{{ libro.titulo }}</option>
-            {% endfor %}
-        </select>
+    <div>
+        <label for="{{ form.libro_id.id }}">{{ form.libro_id.label }}</label>
+        {{ form.libro_id }}
+        {% for error in form.libro_id.errors %}
+            <p role="alert">{{ error }}</p>
+        {% endfor %}
     </div>
 
-    <div class="form-group">
-        <label for="socio_id">Socio</label>
-        <select name="socio_id" id="socio_id" class="input-field">
-            {% for socio in socios %}
-                <option value="{{ socio.id }}">{{ socio.nombre }}</option>
-            {% endfor %}
-        </select>
+    <div>
+        <label for="{{ form.socio_id.id }}">{{ form.socio_id.label }}</label>
+        {{ form.socio_id }}
+        {% for error in form.socio_id.errors %}
+            <p role="alert">{{ error }}</p>
+        {% endfor %}
     </div>
 
-    <button type="submit" class="btn">Prestar</button>
+    {{ form.submit }}
 </form>
-{% endblock %}
-
-{% block styles %}
-<style>
-form {
-    max-width: 500px;
-    margin: 2rem auto;
-    padding: 2rem;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background: #f9f9f9;
-}
-
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
-.input-field {
-    width: 100%;
-    padding: 0.5rem;
-    font-size: 1rem;
-}
-
-.btn {
-    display: inline-block;
-    background: #4a90e2;
-    color: white;
-    padding: 0.75rem 1.5rem;
-    font-weight: bold;
-    border-radius: 5px;
-    border: none;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.btn:hover {
-    background: #357ABD;
-}
-</style>
-{% endblock %}

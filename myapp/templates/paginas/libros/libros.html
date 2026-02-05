@@ -4,6 +4,11 @@
 
 {% block content %}
 <h1>Libros</h1>
+<div style="margin-bottom: 20px;">
+    <button onclick="location.href='{{ url_for('libros.listar', disponibles=1) }}'" style="padding: 10px 20px;">
+        Ver solo libros disponibles
+    </button>
+</div>
 
 <form method="GET" action="{{ url_for('libros.buscar') }}" style="margin-bottom: 20px;">
     <input type="text" name="q" placeholder="Buscar libro..." value="{{ busqueda|default('') }}">

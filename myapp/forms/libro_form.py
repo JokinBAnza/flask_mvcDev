@@ -20,13 +20,3 @@ class LibroForm(FlaskForm):
 
     submit = SubmitField("Guardar")
 
-# Formulario para préstamo de libro
-class PrestamoForm(FlaskForm):
-    libro_id = SelectField("Libro", coerce=int, validators=[DataRequired()])
-    socio_id = SelectField("Socio", coerce=int, validators=[DataRequired()])
-    submit = SubmitField("Prestar libro")
-
-# Formulario para devolución de libro
-class DevolucionForm(FlaskForm):
-    socio_id = SelectField("Socio", coerce=int, validators=[DataRequired()])
-    submit = SubmitField("Devolver libro")

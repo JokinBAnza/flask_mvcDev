@@ -2,8 +2,8 @@ from flask import Blueprint, jsonify, request, render_template, redirect, url_fo
 from myapp.forms.libro_form import LibroForm
 from myapp.models import libro
 from myapp.models.libro import Libro
-from myapp.services import libros_service
-from myapp.services.libros_service import crear_libro, editar_libro, listar_libros
+from myapp.services import libro_service
+from myapp.services.libro_service import crear_libro, editar_libro, listar_libros
 
 navigation_bp = Blueprint(
     "navigation",
