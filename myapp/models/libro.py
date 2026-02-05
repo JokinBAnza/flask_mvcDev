@@ -1,5 +1,4 @@
 from myapp import db
-from sqlalchemy import Boolean  # necesario para el tipo Boolean
 
 class Libro(db.Model):
     __tablename__ = "libros"
@@ -12,9 +11,6 @@ class Libro(db.Model):
     # Relación con socio
     socio_id = db.Column(db.Integer, db.ForeignKey("socio.id"), nullable=True)
     socio = db.relationship("Socio", backref="libros")
-
-    # Nueva columna para saber si el libro está prestado
-    prestado = db.Column(Boolean, default=False, nullable=False)
 
     def to_dict(self):
         return {

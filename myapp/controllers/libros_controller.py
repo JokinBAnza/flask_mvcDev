@@ -20,11 +20,16 @@ libros_bp = Blueprint(
 # ────────────── LISTAR ─────────────
 @libros_bp.route("/")
 def listar():
-    disponibles = request.args.get('disponibles')
-    libros = listar_libros()
-    if disponibles == "1":
-        libros = [libro for libro in libros if not libro.prestado]
-    return render_template("paginas/libros/libros.html", libros=libros)
+    libros = Libro.query.all()
+    libros_estado = []
+
+    for libro in libros:
+        # Buscar préstamo activo para este libro
+        prestamo_activo = Prestamo.query.filter_by(libro_id=libro.id, fecha_devolucion=None).first()
+        estado = "Prestado" if prestamo_activo else "Disponible"
+        libros_estado.append((libro, estado))
+
+    return render_template("paginas/libros/libros.html", libros=libros_estado)
 
 
 @libros_bp.route("/grid")
