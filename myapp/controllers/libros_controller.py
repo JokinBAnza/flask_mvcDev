@@ -17,11 +17,15 @@ libros_bp = Blueprint(
     url_prefix="/libros"
 )
 
-# ────────────── LISTAR ──────────────
+# ────────────── LISTAR ─────────────
 @libros_bp.route("/")
 def listar():
+    disponibles = request.args.get('disponibles')
     libros = listar_libros()
+    if disponibles == "1":
+        libros = [libro for libro in libros if not libro.prestado]
     return render_template("paginas/libros/libros.html", libros=libros)
+
 
 @libros_bp.route("/grid")
 def grid():

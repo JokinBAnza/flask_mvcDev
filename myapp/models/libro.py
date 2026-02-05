@@ -23,7 +23,6 @@ class Libro(db.Model):
             "autor": self.autor,
             "resumen": self.resumen,
             "socio_id": self.socio_id,
-            "prestado": self.prestado  # <-- ahora solo devuelve el valor
         }
 
     def __repr__(self):
