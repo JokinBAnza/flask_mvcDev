@@ -24,8 +24,8 @@ La aplicación permite crear, listar, buscar, prestar y devolver libros, así co
 myapp/
 │
 ├─ controllers/
-│ ├─ libros_controller.py # Rutas y lógica de libros
-│ └─ socios_controller.py # Rutas y lógica de socios
+│ ├─ libros_controller.py  # Rutas y lógica de libros
+│ └─ socios_controller.py  # Rutas y lógica de socios
 │
 ├─ models/
 │ ├─ libro.py
@@ -33,22 +33,22 @@ myapp/
 │ └─ prestamo.py
 │
 ├─ services/
-│ └─ libros_service.py # Funciones para CRUD de libros
+│ └─ libros_service.py  # Funciones para CRUD de libros
 │
 ├─ forms/
 │ ├─ libro_form.py
 │ └─ socio_form.py
 │
 ├─ decorators/
-│ └─ libro_disponible.py # Decorador para verificar disponibilidad de libros
+│ └─ libro_disponible.py  # Decorador para verificar disponibilidad de libros
 │
 ├─ templates/
 │ ├─ base.html
 │ ├─ paginas/
-│ │ ├─ libros/ # Templates de libros (listado, detalle, prestar, devolver)
-│ │ └─ socios/ # Templates de socios (listado, crear, préstamos)
+│ │ ├─ libros/  # Templates de libros (listado, detalle, prestar, devolver)
+│ │ └─ socios/  # Templates de socios (listado, crear, préstamos)
 │
-└─ run.py # Archivo principal para iniciar la app
+└─ run.py  # Archivo principal para iniciar la app
 
 ---
 
@@ -102,38 +102,37 @@ myapp/
 
 ## Instalación y ejecución
 
-1. Crear el entorno virtual:
+Crear y activar el entorno virtual, instalar dependencias, inicializar la base de datos y ejecutar la aplicación:
+
 ```bash
+# Crear entorno virtual
 python -m venv venv
-Activar el entorno virtual:
 
-Windows: venv\Scripts\activate
+# Activar entorno virtual
+# Windows
+venv\Scripts\activate
+# Linux/Mac
+source venv/bin/activate
 
-Linux/Mac: source venv/bin/activate
-
-Instalar las dependencias:
-
-
+# Instalar dependencias
 pip install -r requirements.txt
-Actualizar dependencias:
-Siempre que se instalen nuevas dependencias, actualizar requirements.txt:
 
-pip freeze > requirements.txt
-Inicializar la base de datos (SQLite):
+# Inicializar base de datos
+# Si tienes un script para poblar datos iniciales
+python seed.py  # opcional
 
+# Crear tablas en SQLite
+python -c "from myapp import db; db.create_all()"
 
-python
->>> from myapp import db
->>> db.create_all()
->>> exit()
-Ejecutar la aplicación:
-
+# Ejecutar la aplicación
 python run.py
 
-Acceder en el navegador:
+Abrir en el navegador:
+
 http://127.0.0.1:5000/
 
 Posibles mejoras futuras
+
 Añadir autenticación de usuarios con roles más complejos
 
 Añadir categorías o géneros a los libros
@@ -143,11 +142,3 @@ Mejorar el diseño de la interfaz con CSS/Bootstrap
 Integrar notificaciones para libros vencidos
 
 Exportar listado de libros o socios a CSV/PDF
-
-
-
-
-
-
-
-
