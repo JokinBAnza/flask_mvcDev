@@ -130,7 +130,7 @@ python run.py
 Abrir en el navegador:
 
 http://127.0.0.1:5000/
-
+```
 Posibles mejoras futuras
 
 Añadir autenticación de usuarios con roles más complejos
