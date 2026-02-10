@@ -131,14 +131,14 @@ Abrir en el navegador:
 
 http://127.0.0.1:5000/
 ```
-Posibles mejoras futuras
+## Posibles mejoras futuras
 
-Añadir autenticación de usuarios con roles más complejos
+- Añadir autenticación de usuarios con roles más complejos
 
-Añadir categorías o géneros a los libros
+- Añadir categorías o géneros a los libros
 
-Mejorar el diseño de la interfaz con CSS/Bootstrap
+- Mejorar el diseño de la interfaz con CSS/Bootstrap
 
-Integrar notificaciones para libros vencidos
+- Integrar notificaciones para libros vencidos
 
-Exportar listado de libros o socios a CSV/PDF
+- Exportar listado de libros o socios a CSV/PDF
