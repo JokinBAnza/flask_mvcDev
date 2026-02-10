@@ -27,9 +27,27 @@ def crear_socio_vista():
 
 # ────────────── LISTAR SOCIOS ──────────────
 @socios_bp.route("/")
-@login_required  # opcional: quítalo si quieres que sea público
+@login_required
 def listar_socios():
+    from myapp.services.socio_service import obtener_todos_los_socios, tiene_libros_prestados
+    from flask import request
+
+    q = request.args.get("q", "").strip()         # búsqueda por nombre/email
+    prestamo = request.args.get("prestamo")       # checkbox: si existe, filtrar socios con libro prestado
+
     socios = obtener_todos_los_socios()
+
+    # Filtrar por búsqueda
+    if q:
+        socios = [
+            s for s in socios
+            if q.lower() in s.nombre.lower() or q.lower() in s.email.lower()
+        ]
+
+    # Filtrar solo socios con libro prestado
+    if prestamo:
+        socios = [s for s in socios if tiene_libros_prestados(s.id)]
+
     return render_template("paginas/socios/socios_listado.html", socios=socios)
 
 # ────────────── SOCIOS CON LIBROS PRESTADOS ──────────────
@@ -71,6 +89,7 @@ from flask import jsonify, request
 def borrar_socio_vista(socio_id):
     mensaje = ""
     categoria = ""
+
     if tiene_libros_prestados(socio_id):
         mensaje = "No se puede eliminar el socio porque tiene libros prestados."
         categoria = "error"
@@ -81,9 +100,7 @@ def borrar_socio_vista(socio_id):
         mensaje = "Socio no encontrado."
         categoria = "error"
 
-    # Si viene de fetch
-    if request.is_json or request.headers.get("X-Requested-With") == "XMLHttpRequest":
-        return jsonify({"message": mensaje, "category": categoria})
-    
+    # No necesitamos AJAX para el form normal
     flash(mensaje, categoria)
     return redirect(url_for("socios.listar_socios"))
+

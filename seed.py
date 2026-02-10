@@ -30,12 +30,18 @@ with app.app_context():
 
     # ────────────── SOCIOS ──────────────
     socios = [
-        Socio(nombre="Juan Pérez", email="juan@example.com"),
-        Socio(nombre="María López", email="maria@example.com"),
-        Socio(nombre="Carlos García", email="carlos@example.com"),
-        Socio(nombre="Ana Torres", email="ana@example.com"),
-        Socio(nombre="Luis Fernández", email="luis@example.com")
-    ]
+    Socio(nombre="Juan Pérez", email="juan@example.com"),
+    Socio(nombre="María López", email="maria@example.com"),
+    Socio(nombre="Carlos García", email="carlos@example.com"),
+    Socio(nombre="Ana Torres", email="ana@example.com"),
+    Socio(nombre="Luis Fernández", email="luis@example.com"),
+    Socio(nombre="Sofía Martínez", email="sofia@example.com"),
+    Socio(nombre="Diego Ramírez", email="diego@example.com"),
+    Socio(nombre="Elena Gómez", email="elena@example.com"),
+    Socio(nombre="Miguel Sánchez", email="miguel@example.com"),
+    Socio(nombre="Laura Díaz", email="laura@example.com")
+]
+
     db.session.add_all(socios)
 
     # ────────────── USUARIOS ──────────────
