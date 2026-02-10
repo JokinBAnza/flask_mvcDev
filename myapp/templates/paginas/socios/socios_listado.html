@@ -13,8 +13,10 @@
     </div>
 
     <!-- FORMULARIO DE BÚSQUEDA Y FILTRO -->
-    <form method="GET" action="{{ url_for('socios.listar_socios') }}" style="margin-bottom: 20px; display:flex; gap:10px; align-items:center;">
-        <input type="text" name="q" placeholder="Buscar por nombre o email" value="{{ request.args.get('q', '') }}" style="padding:5px;">
+    <form method="GET" action="{{ url_for('socios.listar_socios') }}"
+        style="margin-bottom: 20px; display:flex; gap:10px; align-items:center;">
+        <input type="text" name="q" placeholder="Buscar por nombre o email" value="{{ request.args.get('q', '') }}"
+            style="padding:5px;">
         <label>
             <input type="checkbox" name="prestamo" value="1" {% if request.args.get('prestamo') %}checked{% endif %}>
             Solo socios con libro prestado
@@ -23,14 +25,17 @@
     </form>
 
     {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            <ul>
-            {% for category, message in messages %}
-                <li class="{{ category }}">{{ message }}</li>
-            {% endfor %}
-            </ul>
+    {% if messages %}
+    <ul>
+        {% for category, message in messages %}
+        {% if category.startswith('socios-') %}
+        <li class="{{ category }}">{{ message }}</li>
         {% endif %}
+        {% endfor %}
+    </ul>
+    {% endif %}
     {% endwith %}
+
 
     {% if socios %}
     <table style="width:100%; border-collapse: collapse; margin-bottom: 20px;">
@@ -43,28 +48,30 @@
             </tr>
         </thead>
         <tbody>
-        {% for socio in socios %}
-        <tr>
-            <td style="padding: 10px; border: 1px solid #ccc;">{{ socio.id }}</td>
-            <td style="padding: 10px; border: 1px solid #ccc;">{{ socio.nombre }}</td>
-            <td style="padding: 10px; border: 1px solid #ccc;">{{ socio.email }}</td>
-            <td style="padding: 10px; border: 1px solid #ccc; text-align:center; vertical-align:middle;">
-                <button onclick="location.href='{{ url_for('socios.editar_socio_vista', socio_id=socio.id) }}'" class="btn-accion">
-                    Editar
-                </button>
-
-                <form method="POST" action="{{ url_for('socios.borrar_socio_vista', socio_id=socio.id) }}">
-                    <button type="submit" class="btn-borrar" onclick="return confirm('¿Seguro que quieres borrar este socio?');">
-                        Borrar
+            {% for socio in socios %}
+            <tr>
+                <td style="padding: 10px; border: 1px solid #ccc;">{{ socio.id }}</td>
+                <td style="padding: 10px; border: 1px solid #ccc;">{{ socio.nombre }}</td>
+                <td style="padding: 10px; border: 1px solid #ccc;">{{ socio.email }}</td>
+                <td style="padding: 10px; border: 1px solid #ccc; text-align:center; vertical-align:middle;">
+                    <button onclick="location.href='{{ url_for('socios.editar_socio_vista', socio_id=socio.id) }}'"
+                        class="btn-accion">
+                        Editar
                     </button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
+
+                    <form method="POST" action="{{ url_for('socios.borrar_socio_vista', socio_id=socio.id) }}">
+                        <button type="submit" class="btn-borrar"
+                            onclick="return confirm('¿Seguro que quieres borrar este socio?');">
+                            Borrar
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
     {% else %}
-        <p>No hay socios registrados.</p>
+    <p>No hay socios registrados.</p>
     {% endif %}
 </div>
 {% endblock %}

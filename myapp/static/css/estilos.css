@@ -575,3 +575,183 @@ input {
 .btn-borrar:hover {
     background-color: #C0392B;
 }
+/* Contenedor general */
+.libros-container {
+    padding-bottom: 100px; /* Para que el footer no tape contenido */
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    font-family: Arial, sans-serif;
+}
+
+/* Título */
+.libros-container h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    color: #4a90e2;
+    margin-bottom: 2rem;
+}
+
+/* Filtros y botones */
+.libros-filtros {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.libros-filtros button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    background-color: #4a90e2;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.libros-filtros button:hover {
+    background-color: #357ABD;
+    transform: translateY(-2px);
+}
+
+/* Formulario de búsqueda */
+.libros-buscar {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.libros-buscar input[type="text"] {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    width: 250px;
+    font-size: 1rem;
+}
+
+.libros-buscar button {
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: none;
+    background-color: #4a90e2;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.libros-buscar button:hover {
+    background-color: #357ABD;
+    transform: translateY(-2px);
+}
+
+/* Tabla de libros */
+.libros-tabla {
+    width: 100%;
+    border-collapse: collapse;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.libros-tabla th, .libros-tabla td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.libros-tabla thead {
+    background-color: #4a90e2;
+    color: white;
+    font-weight: 600;
+}
+
+.libros-tabla tbody tr:nth-child(even) {
+    background-color: #f2f4f6;
+}
+
+.libros-tabla tbody tr:hover {
+    background-color: #e1eaff;
+}
+
+/* Botón de borrar */
+.btn-borrar {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: #E74C3C;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.btn-borrar:hover {
+    background-color: #C0392B;
+    transform: translateY(-1px);
+}
+
+/* Botón de crear libro */
+.libros-crear {
+    text-align: right;
+    margin-top: 20px;
+}
+
+.libros-crear button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    background-color: #4a90e2;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.libros-crear button:hover {
+    background-color: #357ABD;
+    transform: translateY(-2px);
+}
+
+/* Enlaces en la tabla */
+.libros-tabla a {
+    text-decoration: none;
+    color: #4a90e2;
+    font-weight: bold;
+}
+
+.libros-tabla a:hover {
+    text-decoration: underline;
+}
+
+/* Mensajes flash */
+ul li.success {
+    color: green;
+    margin-bottom: 1rem;
+}
+
+ul li.error {
+    color: red;
+    margin-bottom: 1rem;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .libros-filtros, .libros-buscar {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .libros-buscar input[type="text"] {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .libros-crear {
+        text-align: center;
+    }
+}

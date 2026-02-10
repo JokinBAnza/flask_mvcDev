@@ -3,6 +3,7 @@ from flask import Blueprint, render_template, redirect, url_for, flash
 from flask_login import login_required
 from myapp.decorators import role_required
 from myapp.forms.socio_form import SocioForm
+from flask import request
 from myapp.services.socio_service import (
     borrar_socio,
     crear_socio,
@@ -21,7 +22,7 @@ def crear_socio_vista():
     form = SocioForm()
     if form.validate_on_submit():
         crear_socio(nombre=form.nombre.data, email=form.email.data)
-        flash("Socio creado correctamente", "success")
+        flash("Socio creado correctamente", "socios-success")
         return redirect(url_for("socios.listar_socios"))
     return render_template("paginas/socios/socio_crear.html", form=form)
 
@@ -29,8 +30,6 @@ def crear_socio_vista():
 @socios_bp.route("/")
 @login_required
 def listar_socios():
-    from myapp.services.socio_service import obtener_todos_los_socios, tiene_libros_prestados
-    from flask import request
 
     q = request.args.get("q", "").strip()         # búsqueda por nombre/email
     prestamo = request.args.get("prestamo")       # checkbox: si existe, filtrar socios con libro prestado
@@ -67,14 +66,14 @@ def editar_socio_vista(socio_id):
 
     socio = obtener_socio(socio_id)
     if not socio:
-        flash("Socio no encontrado", "error")
+        flash("Socio no encontrado", "socios-error")
         return redirect(url_for("socios.listar_socios"))
 
     form = SocioForm(obj=socio)  # rellena el form con los datos actuales
 
     if form.validate_on_submit():
         editar_socio(socio_id, nombre=form.nombre.data, email=form.email.data)
-        flash("Socio actualizado correctamente", "success")
+        flash("Socio actualizado correctamente", "socios-success")
         return redirect(url_for("socios.listar_socios"))
 
     return render_template("paginas/socios/socio_editar.html", form=form, socio=socio)
@@ -87,20 +86,13 @@ from flask import jsonify, request
 @login_required
 @role_required("admin")
 def borrar_socio_vista(socio_id):
-    mensaje = ""
-    categoria = ""
-
     if tiene_libros_prestados(socio_id):
-        mensaje = "No se puede eliminar el socio porque tiene libros prestados."
-        categoria = "error"
+        flash("No se puede eliminar el socio porque tiene libros prestados.", "socios-error")
     elif borrar_socio(socio_id):
-        mensaje = "Socio eliminado correctamente."
-        categoria = "success"
+        flash("Socio eliminado correctamente.", "socios-success")
     else:
-        mensaje = "Socio no encontrado."
-        categoria = "error"
+        flash("Socio no encontrado.", "socios-error")
 
-    # No necesitamos AJAX para el form normal
-    flash(mensaje, categoria)
     return redirect(url_for("socios.listar_socios"))
+
 

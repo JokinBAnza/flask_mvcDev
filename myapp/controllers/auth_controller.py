@@ -37,7 +37,6 @@ def login():
             flash("Usuario o contraseña incorrectos", "danger")
         else:
             login_user(user)
-            flash("Has iniciado sesión correctamente", "success")
             return redirect(url_for("navigation.inicio"))
 
     return render_template("paginas/auth/login.html")
@@ -48,5 +47,4 @@ def login():
 @login_required
 def logout():
     logout_user()
-    flash("Has cerrado sesión", "success")
     return redirect(url_for("navigation.inicio"))
