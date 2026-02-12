@@ -8,6 +8,9 @@ class Libro(db.Model):
     autor = db.Column(db.String(100), nullable=False)
     resumen = db.Column(db.Text, nullable=True)
 
+    genero = db.Column(db.String(100), nullable=False)
+    anio_publicacion = db.Column(db.Integer, nullable=False)
+
     # Relación con socio
     socio_id = db.Column(db.Integer, db.ForeignKey("socio.id"), nullable=True)
     socio = db.relationship("Socio", backref="libros")
@@ -18,6 +21,8 @@ class Libro(db.Model):
             "titulo": self.titulo,
             "autor": self.autor,
             "resumen": self.resumen,
+            "genero": self.genero,
+            "anio_publicacion": self.anio_publicacion,
             "socio_id": self.socio_id,
         }
 

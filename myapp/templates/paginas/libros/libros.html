@@ -13,51 +13,58 @@
         <button onclick="location.href='{{ url_for('libros.listar') }}'">Ver todos los libros</button>
     </div>
 
-    <!-- Formulario de búsqueda -->
-    <form method="GET" action="{{ url_for('libros.buscar') }}" class="libros-buscar">
-        <input type="text" name="q" placeholder="Buscar libro..." value="{{ busqueda|default('') }}">
-        <button type="submit">Buscar</button>
-    </form>
+  <form method="GET" action="{{ url_for('libros.buscar') }}">
+    {{ form.q }}
+    {{ form.submit }}
+</form>
+
 
     {% if libros %}
     <table class="libros-tabla">
-        <thead>
-            <tr>
-                <th>Título</th>
-                <th>Autor</th>
-                <th>Estado</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for libro in libros %}
-            <tr>
-                <td>
-                    <a href="{{ url_for('libros.detalle', id=libro.id) }}">{{ libro.titulo }}</a>
-                </td>
-                <td>{{ libro.autor }}</td>
-                <td>
-                    {% if libro.socio %}
-                        Prestado
-                    {% else %}
-                        Disponible
-                    {% endif %}
-                </td>
-                <td style="text-align: center;">
-                    {% if not libro.socio %}
-                    <form method="POST" action="{{ url_for('libros.borrar', libro_id=libro.id) }}" style="display:inline-flex; justify-content:center; align-items:center; margin:0;">
-                        <button type="submit" class="btn-borrar" onclick="return confirm('¿Estás seguro de que quieres borrar este libro?');">
-                            Borrar
-                        </button>
-                    </form>
-                    {% else %}
-                        No disponible
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Autor</th>
+            <th>Resumen</th>
+            <th>Género</th>
+            <th>Año Publicación</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for libro in libros %}
+        <tr>
+            <td>
+                <a href="{{ url_for('libros.detalle', id=libro.id) }}">{{ libro.titulo }}</a>
+            </td>
+            <td>{{ libro.autor }}</td>
+            <td>{{ libro.resumen }}</td>
+            <td>{{ libro.genero }}</td>
+            <td>{{ libro.anio_publicacion }}</td>
+            <td>
+                {% if libro.socio %}
+                    Prestado a {{ libro.socio.nombre }}
+                {% else %}
+                    Disponible
+                {% endif %}
+            </td>
+            <td style="text-align: center;">
+                {% if not libro.socio %}
+                <form method="POST" action="{{ url_for('libros.borrar', libro_id=libro.id) }}" style="display:inline-flex; justify-content:center; align-items:center; margin:0;">
+                    <button type="submit" class="btn-borrar" onclick="return confirm('¿Estás seguro de que quieres borrar este libro?');">
+                        Borrar
+                    </button>
+                </form>
+                {% else %}
+                    No disponible
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
     {% else %}
     <p style="text-align:center;">No se encontraron libros que coincidan con tu búsqueda.</p>
     {% endif %}

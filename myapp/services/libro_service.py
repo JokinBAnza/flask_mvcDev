@@ -13,15 +13,25 @@ def obtener_libro(libro_id: int) -> Libro | None:
     return Libro.query.get(libro_id)
 
 # ────────────── CREAR / EDITAR ──────────────
-def crear_libro(titulo: str, autor: str, resumen: str | None = None) -> Libro:
+def crear_libro(titulo: str, autor: str, resumen: str | None = None,
+                genero: str | None = None, anio_publicacion: int | None = None,
+                socio_id: int | None = None) -> Libro:
     """Crea un libro y lo guarda en la base de datos."""
-    libro = Libro(titulo=titulo, autor=autor, resumen=resumen)
+    libro = Libro(
+        titulo=titulo,
+        autor=autor,
+        resumen=resumen,
+        genero=genero,
+        anio_publicacion=anio_publicacion,
+        socio_id=socio_id
+    )
     db.session.add(libro)
     db.session.commit()
     return libro
 
 def editar_libro(libro_id: int, titulo: str | None = None,
-                 autor: str | None = None, resumen: str | None = None) -> Libro | None:
+                 autor: str | None = None, resumen: str | None = None,
+                 genero: str | None = None, anio_publicacion: int | None = None) -> Libro | None:
     """Edita un libro existente."""
     libro = Libro.query.get(libro_id)
     if not libro:
@@ -32,6 +42,10 @@ def editar_libro(libro_id: int, titulo: str | None = None,
         libro.autor = autor
     if resumen is not None:
         libro.resumen = resumen
+    if genero is not None:
+        libro.genero = genero
+    if anio_publicacion is not None:
+        libro.anio_publicacion = anio_publicacion
     db.session.commit()
     return libro
 

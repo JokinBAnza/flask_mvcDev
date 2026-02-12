@@ -25,5 +25,21 @@
         {% endfor %}
     </div>
 
+    <div>
+        <label for="{{ form.genero.id }}">{{ form.genero.label }}</label>
+        {{ form.genero }}
+        {% for error in form.genero.errors %}
+            <p role="alert">{{ error }}</p>
+        {% endfor %}
+    </div>
+
+    <div>
+        <label for="{{ form.anio_publicacion.id }}">{{ form.anio_publicacion.label }}</label>
+        {{ form.anio_publicacion }}
+        {% for error in form.anio_publicacion.errors %}
+            <p role="alert">{{ error }}</p>
+        {% endfor %}
+    </div>
+
     {{ form.submit }}
 </form>

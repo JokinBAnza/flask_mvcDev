@@ -4,6 +4,7 @@ from flask_login import login_required
 from myapp.forms.libro_form import LibroForm
 from myapp.forms.devolucion_form import DevolucionForm
 from myapp.forms.prestamo_form import PrestamoForm
+from myapp.forms.busquedaLibro_form import BusquedaLibroForm
 from myapp.decorators import role_required
 from myapp.services.libro_service import (
     listar_libros, obtener_libro, crear_libro, editar_libro,
@@ -21,7 +22,11 @@ def listar():
         libros = listar_libros_disponibles()
     else:
         libros = listar_libros()
-    return render_template("paginas/libros/libros.html", libros=libros)
+
+    # Creamos el formulario con los datos GET para mantener la búsqueda
+    form = BusquedaLibroForm(request.args)
+
+    return render_template("paginas/libros/libros.html", libros=libros, form=form)
 
 
 
@@ -48,7 +53,9 @@ def detalle(id):
             libro_id=id,
             titulo=form.titulo.data,
             autor=form.autor.data,
-            resumen=form.resumen.data
+            resumen=form.resumen.data,
+            genero=form.genero.data,
+            anio_publicacion=form.anio_publicacion.data
         )
         flash("Libro actualizado correctamente", "success")
         return redirect(url_for("libros.listar"))
@@ -66,10 +73,13 @@ def crear():
         crear_libro(
             titulo=form.titulo.data,
             autor=form.autor.data,
-            resumen=form.resumen.data
+            resumen=form.resumen.data,
+            genero=form.genero.data,
+            anio_publicacion=form.anio_publicacion.data
         )
         flash("Libro creado correctamente", "success")
         return redirect(url_for("libros.listar"))
+
 
     return render_template("paginas/libros/libro_crear.html", form=form)
 
@@ -150,4 +160,8 @@ def borrar(libro_id):
 def buscar():
     palabra = request.args.get("q", "")
     libros = buscar_libros_por_titulo(palabra)
-    return render_template("paginas/libros/libros.html", libros=libros, busqueda=palabra)
+
+    # Creamos el formulario con los datos GET para que tenga el valor de búsqueda
+    form = BusquedaLibroForm(request.args)
+
+    return render_template("paginas/libros/libros.html", libros=libros, form=form, busqueda=palabra)

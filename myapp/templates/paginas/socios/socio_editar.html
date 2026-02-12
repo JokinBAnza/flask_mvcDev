@@ -4,14 +4,13 @@
 {% block content %}
 <h1>Editar Socio</h1>
 
-<form method="POST" class="form-container">
     {{ form.hidden_tag() }}
     {% include 'componentes/socio_form.html' %}
 
     <div class="form-buttons">
         <a href="{{ url_for('socios.listar_socios') }}" class="btn btn-cancelar">Cancelar</a>
     </div>
-</form>
+
 
 {% endblock %}
 
